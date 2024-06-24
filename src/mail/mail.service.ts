@@ -1,11 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 // import { Cron, CronExpression } from '@nestjs/schedule';
 import { MailerService } from '@nestjs-modules/mailer';
+// https://nest-modules.github.io/mailer/docs/mailer
 
 @Injectable()
 export class MailService {
   constructor(private readonly mailerService: MailerService) {
-    this.mailexample();
+    // this.mailexample();
   }
 
   private readonly logger = new Logger(MailService.name);
