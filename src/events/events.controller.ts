@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
@@ -53,7 +54,13 @@ export class EventsController {
   async findOne(@Param('id', ParseIntPipe) id: number) {
     // return this.events.find((e) => e.id === parseInt(id));
     console.log(typeof id);
-    return await this.repository.findOneBy({ id });
+    const event = await this.repository.findOneBy({ id });
+
+    if (!event) {
+      throw new NotFoundException();
+    }
+
+    return event;
   }
 
   @Post()
@@ -88,6 +95,9 @@ export class EventsController {
     // };
     // return this.events[index];
     const event = await this.repository.findOne(id);
+    if (!event) {
+      throw new NotFoundException();
+    }
     return await this.repository.save({
       ...event,
       ...input,
@@ -100,6 +110,9 @@ export class EventsController {
   async remove(@Param('id') id) {
     // this.events = this.events.filter((e) => e.id != id);
     const event = await this.repository.findOne(id);
+    if (!event) {
+      throw new NotFoundException();
+    }
     await this.repository.remove(event);
   }
 }
